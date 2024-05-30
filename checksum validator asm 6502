@@ -10,12 +10,11 @@ BMI CHECKSUM_INVALID
 
 ; perform addition loop
 TAY
-DEY				; Dex first bc first byte is at offset 0
-LDA ($10),Y
-CLC
 DEY
+LDA #$00
 
 ADD_LOOP:
+CLC
 ADC ($10),Y
 DEY
 BPL ADD_LOOP
