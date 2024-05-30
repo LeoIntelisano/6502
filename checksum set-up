@@ -1,0 +1,29 @@
+; checksum set-up
+; Sets the memory locations to a valid data string and checksum to test checksum validator
+
+; set up pointer
+LDA #$00
+STA $10
+LDA #$10
+STA $11
+
+; store data
+LDA #$10
+STA $1000
+LDA #$11
+STA $1001
+LDA #$12
+STA $1002
+
+; create checksum
+CLC
+ADC #$11
+ADC #$10
+STA $1003
+LDA #$0
+SEC
+SBC $1003
+; store checksum and set X register to the size
+STA $1003
+LDX #$4
+JSR $800

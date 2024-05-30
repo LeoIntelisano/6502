@@ -1,0 +1,34 @@
+; checksum validator asm 6502
+; valid if lowest 8 bits are zero
+; Data begin at address in $10-$11, num bytes (including checksum) an input to X register
+; Set A register to 1 if checksum is valid, 0 if invalid
+
+; ensure at least two bytes in size
+TXA
+CMP #$02
+BMI CHECKSUM_INVALID
+
+; perform addition loop
+TAY
+DEY				; Dex first bc first byte is at offset 0
+LDA ($10),Y
+CLC
+DEY
+
+ADD_LOOP:
+ADC ($10),Y
+DEY
+BPL ADD_LOOP
+
+CMP #$0
+BEQ CHECKSUM_VALID
+
+CHECKSUM_INVALID:
+LDA #$0
+JMP END
+
+CHECKSUM_VALID:
+LDA #$01
+
+END:
+RTS
